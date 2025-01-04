@@ -45,6 +45,16 @@ function minimalist_loader_register_settings()
     register_setting('minimalist_loader_settings_group', 'minimalist_loader_gpt_event', [
         'default' => ''
     ]);
+
+    // Nova opção para selecionar o tipo de anúncio
+    register_setting('minimalist_loader_settings_group', 'minimalist_loader_ad_type', [
+        'default' => 'admanager'
+    ]);
+
+    // Opção para o slot ID do AdSense
+    register_setting('minimalist_loader_settings_group', 'minimalist_loader_adsense_slot', [
+        'default' => ''
+    ]);
 }
 add_action('admin_init', 'minimalist_loader_register_settings');
 
@@ -128,6 +138,26 @@ function minimalist_loader_settings_page()
                         </p>
                     </td>
                 </tr>
+                <tr valign="top">
+                    <th scope="row">Tipo de Anúncio</th>
+                    <td>
+                        <select name="minimalist_loader_ad_type">
+                            <option value="admanager" <?php selected(get_option('minimalist_loader_ad_type', 'admanager'), 'admanager'); ?>>Google Ad Manager</option>
+                            <option value="adsense" <?php selected(get_option('minimalist_loader_ad_type', 'admanager'), 'adsense'); ?>>Google AdSense</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr valign="top" class="adsense-option">
+                    <th scope="row">Slot ID do AdSense</th>
+                    <td>
+                        <input type="text" name="minimalist_loader_adsense_slot"
+                            value="<?php echo esc_attr(get_option('minimalist_loader_adsense_slot', '')); ?>"
+                            placeholder="Ex: 9185880051">
+                        <p class="description">
+                            Insira o ID do slot do AdSense que você deseja aguardar carregar (ex: data-ad-slot="9185880051")
+                        </p>
+                    </td>
+                </tr>
             </table>
 
             <?php submit_button(); ?>
@@ -186,6 +216,8 @@ function minimalist_loader_show_preloader()
 
             const minTime = <?php echo $min_time; ?>;
             const maxTime = <?php echo $max_time; ?>;
+            const adType = "<?php echo esc_js(get_option('minimalist_loader_ad_type', 'admanager')); ?>";
+            const adsenseSlot = "<?php echo esc_js(get_option('minimalist_loader_adsense_slot', '')); ?>";
             const startTime = Date.now();
             const gptEvent = "<?php echo esc_js($gpt_event); ?>";
             let eventTriggered = false;
@@ -204,14 +236,29 @@ function minimalist_loader_show_preloader()
                 }
             }
 
+            function checkAdsenseLoaded() {
+                if (!window.adsbygoogle) return false;
+                const ads = document.querySelectorAll('ins.adsbygoogle');
+                for (let ad of ads) {
+                    if (ad.dataset.adSlot === adsenseSlot && ad.dataset.adsbygoogleStatus === 'done') {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
             function conditionsMet() {
                 const elapsed = Date.now() - startTime;
-                const adManagerReady = (typeof googletag !== 'undefined' && googletag.apiReady === true);
 
-                if (!gptEvent) {
-                    return (elapsed >= minTime && (adManagerReady || elapsed >= maxTime));
+                if (adType === 'adsense') {
+                    return (elapsed >= minTime && (checkAdsenseLoaded() || elapsed >= maxTime));
                 } else {
-                    return (elapsed >= minTime && (eventTriggered || elapsed >= maxTime));
+                    const adManagerReady = (typeof googletag !== 'undefined' && googletag.apiReady === true);
+                    if (!gptEvent) {
+                        return (elapsed >= minTime && (adManagerReady || elapsed >= maxTime));
+                    } else {
+                        return (elapsed >= minTime && (eventTriggered || elapsed >= maxTime));
+                    }
                 }
             }
 
@@ -223,7 +270,7 @@ function minimalist_loader_show_preloader()
                 }
             }
 
-            if (gptEvent) {
+            if (adType === 'admanager' && gptEvent) {
                 const interval = setInterval(function () {
                     if (typeof googletag !== 'undefined' && googletag.apiReady === true && googletag.pubads) {
                         clearInterval(interval);
