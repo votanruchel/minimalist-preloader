@@ -1,118 +1,61 @@
 # Minimalist Loader
 
-A lightweight and optimized WordPress plugin designed specifically for publishers using Google Ad Manager. This plugin provides a minimalist preloader that elegantly handles the page loading state while waiting for Google Ad Manager to initialize.
+Minimalist Loader is a WordPress plugin for publishers that run monetization through Google Ad Manager and need a controlled, lightweight loading layer before exposing the page experience.
 
-## Features
+## Core
 
-- 🚀 Lightweight and performance-optimized
-- ⚙️ Fully customizable appearance
-- 🎯 Specifically designed for Google Ad Manager integration
-- 🔄 Smart loading management with minimum and maximum time controls
-- 🌫️ Optional background blur effect
-- 📱 Responsive and cross-browser compatible
-- ⏱️ Configurable GPT event listening
+- Google Ad Manager-first preloader for publisher sites
+- Waits for the first configured ad block to become ready
+- Uses a maximum timeout to avoid blocking the page indefinitely
+- Keeps the frontend small and dependency-free
+- Provides visual presets without requiring theme changes
+- Supports optional logo and subtitle for branded loading states
+- Allows display targeting by page context
+- Supports post/page exclusions by ID
 
-## Benefits for Publishers
+## Who It Is For
 
-- **Improved User Experience**: Prevents content shifting and flickering during ad loading
-- **Better Ad Performance**: Ensures ads are properly loaded before displaying content
-- **Customizable Loading Times**: Set minimum and maximum loading durations to balance user experience and ad delivery
-- **Flexible Integration**: Works with various Google Publisher Tag events
-- **Minimal Performance Impact**: Optimized code with minimal overhead
+Minimalist Loader is intended for publishers, media sites, and content portals that:
+
+- Serve ads through Google Ad Manager
+- Need better control over the first visible page state
+- Want a minimal preloader without adding a heavy visual framework
+- Need different behavior across home, posts, pages, and category archives
+- Need simple editorial controls inside WordPress
+
+## What It Does
+
+The plugin displays a configurable preloader while the page and selected ad blocks initialize. Once one of the configured blocks is ready, the loader closes while respecting the minimum display time. If the ad stack takes too long, the maximum time setting releases the page.
+
+The admin interface includes:
+
+- Loader model selection
+- Color, blur, timing, and fade controls
+- Optional subtitle
+- Optional logo through the WordPress Media Library
+- Google Ad Manager block list
+- Display rules by content type
+- Manual and searchable post/page exclusions
+
+## Requirements
+
+- WordPress 5.0+
+- PHP 7.0+
+- Google Ad Manager / Google Publisher Tag present on the frontend
 
 ## Installation
 
-### Manual Installation
-
-1. Download the latest release from the [GitHub repository](https://github.com/votanruchel/minimalist-preloader/)
-2. Upload the plugin folder to the `/wp-content/plugins/` directory of your WordPress installation
-3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Configure the plugin settings under 'Settings > Minimalist Loader'
-
-### Via WordPress Admin Panel
-
-1. Go to 'Plugins > Add New' in your WordPress admin panel
-2. Search for 'Minimalist Loader'
-3. Click 'Install Now' and then 'Activate'
-4. Configure the plugin settings under 'Settings > Minimalist Loader'
-
-## Configuration
-
-1. Navigate to 'Settings > Minimalist Loader' in your WordPress admin panel
-2. Customize the following options:
-   - Spinner Color
-   - Spinner Background Color
-   - Screen Background Color
-   - Background Blur Effect
-   - Minimum Display Time
-   - Maximum Display Time
-   - Google Ad Manager Event Trigger
-
-## Usage
-
-The plugin works automatically after activation and configuration. It will:
-
-1. Show a loading spinner when the page loads
-2. Wait for Google Ad Manager to initialize
-3. Respect minimum and maximum loading times
-4. Optionally wait for specific GPT events
-5. Smoothly fade out when loading is complete
-
-## Advanced Configuration
-
-### GPT Event Listening
-
-You can configure the plugin to wait for specific Google Publisher Tag events:
-
-- `slotRenderEnded`: Wait for specific ad slots to render
-- `impressionViewable`: Wait for ads to become viewable
-- Leave empty to only wait for initial GPT loading
-
-## Contributing
-
-We welcome contributions to improve Minimalist Loader! Here's how you can help:
-
-1. Fork the [repository](https://github.com/votanruchel/minimalist-preloader/)
-2. Create a new branch (`git checkout -b feature/improvement`)
-3. Make your changes
-4. Run tests if available
-5. Commit your changes (`git commit -am 'Add new feature'`)
-6. Push to the branch (`git push origin feature/improvement`)
-7. Create a Pull Request
-
-### Development Setup
-
-1. Clone the repository: `git clone https://github.com/votanruchel/minimalist-preloader/`
-2. Set up a local WordPress development environment
-3. Symlink or copy the plugin to your WordPress plugins directory
-4. Activate the plugin and start developing
-
-### Coding Standards
-
-- Follow WordPress PHP Coding Standards
-- Maintain compatibility with PHP 7.0+
-- Ensure backward compatibility with WordPress 5.0+
-- Document any new functions or features
-
-## Support
-
-- Create an issue in the [GitHub repository](https://github.com/votanruchel/minimalist-preloader/issues)
-- Visit our [support forum](https://wordpress.org/support/plugin/minimalist-loader)
-- Contact us through our [website](https://votan.dev)
-
-## License
-
-This project is licensed under the GPL2 License - see the [LICENSE](LICENSE) file for details.
-
-## Credits
-
-Created and maintained by [Votan Ruchel](https://votan.dev)
+1. Upload the plugin folder to `/wp-content/plugins/`.
+2. Activate **Minimalist Loader** in WordPress.
+3. Configure it under `Settings > Minimalist Loader`.
 
 ## Changelog
 
 ### 1.0.0
+
 - Initial release
-- Basic loading functionality
-- Customizable appearance
-- GPT event integration
-- Admin configuration panel
+- Google Ad Manager-first preloader
+- Minimal loader presets
+- Optional subtitle and logo support
+- Display rules and post/page exclusions
+- Configurable timing, colors, blur, and fade controls

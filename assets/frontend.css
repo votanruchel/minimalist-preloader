@@ -1,0 +1,198 @@
+html.minimalist-loader-active {
+  overflow: hidden !important;
+}
+
+#minimalist-loader-container {
+  align-items: center;
+  background: var(--ml-bg, rgba(255, 255, 255, 0.94));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  opacity: 1;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition: opacity var(--ml-fade, 240ms) ease;
+  z-index: 999999;
+}
+
+#minimalist-loader-container.is-hiding {
+  opacity: 0;
+}
+
+.minimalist-loader__inner {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: min(320px, calc(100vw - 48px));
+  text-align: center;
+}
+
+.minimalist-loader__brand {
+  max-width: 180px;
+}
+
+.minimalist-loader__logo {
+  display: block;
+  height: auto;
+  max-height: 72px;
+  max-width: 180px;
+  object-fit: contain;
+}
+
+.minimalist-loader__mark {
+  color: var(--ml-primary, #111827);
+  height: 48px;
+  position: relative;
+  width: 48px;
+}
+
+.minimalist-loader__subtitle {
+  color: var(--ml-primary, #111827);
+  font-size: 13px;
+  line-height: 1.45;
+  margin: -4px 0 0;
+}
+
+.minimalist-loader--spinner .minimalist-loader__mark {
+  border: 2px solid var(--ml-secondary, #e5e7eb);
+  border-radius: 50%;
+  border-top-color: var(--ml-primary, #111827);
+  animation: minimalist-loader-spin 800ms linear infinite;
+}
+
+.minimalist-loader--spinner .minimalist-loader__mark span,
+.minimalist-loader--double-ring .minimalist-loader__mark span,
+.minimalist-loader--bar .minimalist-loader__mark span,
+.minimalist-loader--pulse .minimalist-loader__mark span {
+  display: none;
+}
+
+.minimalist-loader--dots .minimalist-loader__mark {
+  align-items: center;
+  display: flex;
+  gap: 7px;
+  height: 14px;
+  justify-content: center;
+  width: 58px;
+}
+
+.minimalist-loader--dots .minimalist-loader__mark span {
+  animation: minimalist-loader-dot 900ms ease-in-out infinite;
+  background: var(--ml-primary, #111827);
+  border-radius: 50%;
+  display: block;
+  height: 8px;
+  opacity: 0.35;
+  width: 8px;
+}
+
+.minimalist-loader--dots .minimalist-loader__mark span:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.minimalist-loader--dots .minimalist-loader__mark span:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.minimalist-loader--bar .minimalist-loader__mark {
+  background: var(--ml-secondary, #e5e7eb);
+  border-radius: 999px;
+  height: 3px;
+  overflow: hidden;
+  width: 96px;
+}
+
+.minimalist-loader--bar .minimalist-loader__mark::after {
+  animation: minimalist-loader-bar 1s ease-in-out infinite;
+  background: var(--ml-primary, #111827);
+  border-radius: inherit;
+  content: "";
+  display: block;
+  height: 100%;
+  width: 38%;
+}
+
+.minimalist-loader--double-ring .minimalist-loader__mark {
+  border: 2px solid var(--ml-secondary, #e5e7eb);
+  border-left-color: var(--ml-primary, #111827);
+  border-radius: 50%;
+  animation: minimalist-loader-spin 900ms linear infinite;
+}
+
+.minimalist-loader--double-ring .minimalist-loader__mark::after {
+  border: 2px solid transparent;
+  border-right-color: var(--ml-primary, #111827);
+  border-radius: 50%;
+  bottom: 8px;
+  content: "";
+  left: 8px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.minimalist-loader--pulse .minimalist-loader__mark {
+  background: var(--ml-primary, #111827);
+  border-radius: 50%;
+  height: 14px;
+  width: 14px;
+}
+
+.minimalist-loader--pulse .minimalist-loader__mark::after {
+  animation: minimalist-loader-pulse 1.1s ease-out infinite;
+  border: 1px solid var(--ml-primary, #111827);
+  border-radius: 50%;
+  content: "";
+  inset: -14px;
+  opacity: 0;
+  position: absolute;
+}
+
+@keyframes minimalist-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes minimalist-loader-dot {
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes minimalist-loader-bar {
+  0% {
+    transform: translateX(-110%);
+  }
+
+  100% {
+    transform: translateX(270%);
+  }
+}
+
+@keyframes minimalist-loader-pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.75);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .minimalist-loader__mark,
+  .minimalist-loader__mark::after,
+  .minimalist-loader__mark span {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

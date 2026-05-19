@@ -1,0 +1,85 @@
+name: Release ZIP
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to package
+        required: true
+      stable:
+        description: Also publish minimalist-preloader-stable.zip
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Resolve release context
+        id: release
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "tag=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+            echo "stable=${{ github.event.release.prerelease == false && github.event.release.draft == false }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+            echo "stable=${{ inputs.stable }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout release ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.release.outputs.tag }}
+
+      - name: Build plugin ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          tag="${{ steps.release.outputs.tag }}"
+          version="${tag#v}"
+          slug="minimalist-preloader"
+
+          rm -rf dist build
+          mkdir -p "build/${slug}" dist
+
+          rsync -a \
+            --exclude ".git" \
+            --exclude ".github" \
+            --exclude ".gitignore" \
+            --exclude ".DS_Store" \
+            --exclude "*.zip" \
+            --exclude "build" \
+            --exclude "docs" \
+            --exclude "dist" \
+            ./ "build/${slug}/"
+
+          cd build
+          zip -r "../dist/${slug}-${version}.zip" "${slug}"
+          cd ..
+
+          if [ "${{ steps.release.outputs.stable }}" = "true" ]; then
+            cp "dist/${slug}-${version}.zip" "dist/${slug}-stable.zip"
+          fi
+
+      - name: Upload release assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          tag="${{ steps.release.outputs.tag }}"
+          gh release upload "$tag" dist/*.zip --clobber
