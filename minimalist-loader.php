@@ -1,37 +1,31 @@
 <?php
 /**
- * Plugin Name: Minimalist Loader
- * Plugin URI: https://votan.dev
- * Description: Minimal preloader integrated with native Google Ad Manager events.
- * Author: Votan Ruchel
- * Version: 1.0.0
- * Author URI: https://votan.dev
- * License: GPL2
+ * Plugin Name:       Minimalist Loader
+ * Plugin URI:        https://votan.dev
+ * Description:       Minimal preloader integrated with native Google Ad Manager events.
+ * Version:           2.1.0
+ * Requires at least: 6.4
+ * Requires PHP:      8.1
+ * Author:            Votan Ruchel
+ * Author URI:        https://votan.dev
+ * License:           GPL-2.0-or-later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       minimalist-loader
+ * Domain Path:       /languages
  */
 
-if (!defined('ABSPATH')) {
-    exit;
-}
+declare(strict_types=1);
 
-define('MINIMALIST_LOADER_VERSION', '1.0.0');
-define('MINIMALIST_LOADER_PLUGIN_FILE', __FILE__);
-define('MINIMALIST_LOADER_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('MINIMALIST_LOADER_PLUGIN_DIR', plugin_dir_path(__FILE__));
+namespace MinimalistLoader;
 
-require_once MINIMALIST_LOADER_PLUGIN_DIR . 'includes/class-minimalist-loader-sanitizer.php';
-require_once MINIMALIST_LOADER_PLUGIN_DIR . 'includes/class-minimalist-loader.php';
-require_once MINIMALIST_LOADER_PLUGIN_DIR . 'includes/class-minimalist-loader-admin.php';
-require_once MINIMALIST_LOADER_PLUGIN_DIR . 'includes/class-minimalist-loader-frontend.php';
+defined('ABSPATH') || exit;
 
-function minimalist_loader()
-{
-    static $plugin = null;
+const VERSION = '2.1.0';
 
-    if ($plugin === null) {
-        $plugin = new Minimalist_Loader();
-    }
+require_once __DIR__ . '/src/Autoloader.php';
 
-    return $plugin;
-}
+Autoloader::register(__DIR__ . '/src');
 
-add_action('plugins_loaded', 'minimalist_loader');
+add_action('plugins_loaded', static function (): void {
+    (new Plugin(__FILE__, VERSION))->register();
+});
