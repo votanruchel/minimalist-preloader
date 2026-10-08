@@ -32,7 +32,7 @@ The plugin displays a configurable preloader while the page and selected ad bloc
 The admin interface includes:
 
 - Loader model selection
-- Color, blur, timing, and fade controls
+- Color, blur intensity, timing, and fade controls
 - Optional post-release scroll lock, set in seconds or milliseconds (up to 10 seconds)
 - Optional subtitle
 - Optional logo through the WordPress Media Library
@@ -81,6 +81,14 @@ assets/                 Two stylesheets, two scripts, no framework
 ```
 
 ## Changelog
+
+### 2.2.0
+
+- Adjustable background blur intensity (0 to 20 px), keeping 6 px as the default
+
+### 2.1.1
+
+- Fixed the loader showing on a static front page with Home unchecked: the front page matched Pages too
 
 ### 2.1.0
 

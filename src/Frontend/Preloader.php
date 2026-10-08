@@ -133,11 +133,12 @@ final class Preloader
         // Every value below is allowlisted during hydration, which is also what keeps
         // it from breaking out of this <style> block.
         $properties = sprintf(
-            ':root{--ml-primary:%s;--ml-secondary:%s;--ml-bg:%s;--ml-fade:%dms;}',
+            ':root{--ml-primary:%s;--ml-secondary:%s;--ml-bg:%s;--ml-fade:%dms;--ml-blur:%dpx;}',
             $appearance->primaryColor,
             $appearance->secondaryColor,
             $appearance->backgroundColor,
-            $appearance->fadeDuration
+            $appearance->fadeDuration,
+            $appearance->blurRadius
         );
 
         if (!$appearance->useBlur) {

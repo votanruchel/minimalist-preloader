@@ -33,7 +33,9 @@ enum Location: string
         return match ($this) {
             self::Home => is_front_page() || is_home(),
             self::Posts => is_singular('post'),
-            self::Pages => is_page(),
+            // A static front page is also a page; it belongs to Home only, or unchecking
+            // Home would not keep the loader off it while Pages is checked.
+            self::Pages => is_page() && !is_front_page(),
             self::Categories => is_category(),
         };
     }

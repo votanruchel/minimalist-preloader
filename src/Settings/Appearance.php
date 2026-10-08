@@ -20,6 +20,7 @@ final class Appearance
     public const MAX_TIME_FLOOR = 200;
     public const MAX_TIME_CEILING = 30000;
     public const FADE_CEILING = 3000;
+    public const BLUR_CEILING = 20;
     public const SCROLL_LOCK_CEILING = 10000;
 
     public function __construct(
@@ -28,6 +29,7 @@ final class Appearance
         public readonly string $secondaryColor = self::DEFAULT_SECONDARY,
         public readonly string $backgroundColor = self::DEFAULT_BACKGROUND,
         public readonly bool $useBlur = true,
+        public readonly int $blurRadius = 6,
         public readonly int $logoId = 0,
         public readonly string $subtitle = '',
         public readonly int $minTime = 400,
@@ -50,6 +52,7 @@ final class Appearance
             secondaryColor: self::color($raw['secondary_color'] ?? null, self::DEFAULT_SECONDARY),
             backgroundColor: self::color($raw['background_color'] ?? null, self::DEFAULT_BACKGROUND),
             useBlur: !empty($raw['use_blur']),
+            blurRadius: self::clamp($raw['blur_radius'] ?? 6, 0, self::BLUR_CEILING),
             // Cheap on purpose: hydration runs on every read, and the deep file check
             // lives in the save path (SettingsRepository::sanitize).
             logoId: absint($raw['logo_id'] ?? 0),
@@ -77,6 +80,7 @@ final class Appearance
             'secondary_color' => $this->secondaryColor,
             'background_color' => $this->backgroundColor,
             'use_blur' => $this->useBlur ? '1' : '0',
+            'blur_radius' => $this->blurRadius,
             'logo_id' => $this->logoId,
             'subtitle' => $this->subtitle,
             'min_time' => $this->minTime,

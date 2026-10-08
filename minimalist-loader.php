@@ -3,7 +3,7 @@
  * Plugin Name:       Minimalist Loader
  * Plugin URI:        https://votan.dev
  * Description:       Minimal preloader integrated with native Google Ad Manager events.
- * Version:           2.1.0
+ * Version:           2.2.0
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Author:            Votan Ruchel
@@ -20,7 +20,7 @@ namespace MinimalistLoader;
 
 defined('ABSPATH') || exit;
 
-const VERSION = '2.1.0';
+const VERSION = '2.2.0';
 
 require_once __DIR__ . '/src/Autoloader.php';
 

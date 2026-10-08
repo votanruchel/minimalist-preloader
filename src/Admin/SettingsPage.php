@@ -200,6 +200,14 @@ final class SettingsPage
                                 </label>
                             </div>
 
+                            <div class="ml-columns">
+                                <div class="ml-field">
+                                    <label for="ml-blur-radius"><?php esc_html_e('Blur intensity (px)', 'minimalist-loader'); ?></label>
+                                    <input id="ml-blur-radius" type="number" min="0" max="<?php echo esc_attr((string) Appearance::BLUR_CEILING); ?>" name="<?php echo esc_attr($option); ?>[appearance][blur_radius]" value="<?php echo esc_attr((string) $appearance->blurRadius); ?>">
+                                    <p class="description"><?php esc_html_e('Only visible when the screen background is not fully opaque.', 'minimalist-loader'); ?></p>
+                                </div>
+                            </div>
+
                             <div class="ml-field">
                                 <label for="ml-subtitle"><?php esc_html_e('Optional subtitle', 'minimalist-loader'); ?></label>
                                 <input id="ml-subtitle" type="text" maxlength="<?php echo esc_attr((string) Appearance::SUBTITLE_MAX_LENGTH); ?>" name="<?php echo esc_attr($option); ?>[appearance][subtitle]" value="<?php echo esc_attr($appearance->subtitle); ?>" placeholder="<?php esc_attr_e('Loading content...', 'minimalist-loader'); ?>">

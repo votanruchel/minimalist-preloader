@@ -28,8 +28,8 @@ html.minimalist-loader-scroll-locked {
   justify-content: center;
 
   background: var(--ml-bg, rgba(255, 255, 255, 0.94));
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(var(--ml-blur, 6px));
+  -webkit-backdrop-filter: blur(var(--ml-blur, 6px));
 
   opacity: 1;
   transition: opacity var(--ml-fade, 240ms) ease;
